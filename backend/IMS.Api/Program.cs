@@ -1,22 +1,37 @@
+using IMS.Api.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+            // Register Swagger services
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Register ApplicationDbContext with Dependency Injection and configure SQL Server
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection")));
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Uncomment this block after the initial migration and database creation
+            // to seed the database with default data.
+            // Seed database
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await SeedData.SeedAsync(context);
+            }
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -27,10 +42,9 @@ namespace IMS.Api
 
             app.UseAuthorization();
 
-
             app.MapControllers();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }
