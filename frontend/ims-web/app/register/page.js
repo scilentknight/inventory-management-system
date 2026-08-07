@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import AuthLayout from "@/components/AuthLayout";
+import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 
 const initialForm = {
   firstName: "",
@@ -73,107 +75,111 @@ export default function RegisterPage() {
   }
 
   return (
-    <AuthLayout title="Register">
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="grid grid-cols-2 gap-4">
+    <>
+      <Navbar />
+      <AuthLayout title="Register">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-2 gap-4">
+            <Field
+              id="firstName"
+              label="First Name"
+              value={form.firstName}
+              onChange={handleChange}
+              error={errors.firstName}
+              placeholder="First Name"
+            />
+            <Field
+              id="lastName"
+              label="Last Name"
+              value={form.lastName}
+              onChange={handleChange}
+              error={errors.lastName}
+              placeholder="Last Name"
+            />
+          </div>
+
           <Field
-            id="firstName"
-            label="First Name"
-            value={form.firstName}
+            id="username"
+            label="Username"
+            value={form.username}
             onChange={handleChange}
-            error={errors.firstName}
-            placeholder="First Name"
+            error={errors.username}
+            placeholder="Username"
           />
+
           <Field
-            id="lastName"
-            label="Last Name"
-            value={form.lastName}
+            id="email"
+            label="Email"
+            type="email"
+            value={form.email}
             onChange={handleChange}
-            error={errors.lastName}
-            placeholder="Last Name"
+            error={errors.email}
+            placeholder="name@example.com"
           />
-        </div>
 
-        <Field
-          id="username"
-          label="Username"
-          value={form.username}
-          onChange={handleChange}
-          error={errors.username}
-          placeholder="Username"
-        />
-
-        <Field
-          id="email"
-          label="Email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}
-          error={errors.email}
-          placeholder="name@example.com"
-        />
-
-        <Field
-          id="phone"
-          label="Phone (Optional)"
-          type="tel"
-          value={form.phone}
-          onChange={handleChange}
-          placeholder="Phone (Optional)"
-        />
-
-        <div className="grid grid-cols-2 gap-4">
           <Field
-            id="password"
-            label="Password"
-            type="password"
-            value={form.password}
+            id="phone"
+            label="Phone (Optional)"
+            type="tel"
+            value={form.phone}
             onChange={handleChange}
-            error={errors.password}
-            placeholder="Password"
+            placeholder="Phone (Optional)"
           />
-          <Field
-            id="confirmPassword"
-            label="Confirm Password"
-            type="password"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            error={errors.confirmPassword}
-            placeholder="Confirm Password"
-          />
-        </div>
 
-        <button
-          type="submit"
-          className="w-full py-3.5 rounded-xl font-semibold text-white btn-primary-solid"
-        >
-          Create Account
-        </button>
+          <div className="grid grid-cols-2 gap-4">
+            <Field
+              id="password"
+              label="Password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              error={errors.password}
+              placeholder="Password"
+            />
+            <Field
+              id="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              error={errors.confirmPassword}
+              placeholder="Confirm Password"
+            />
+          </div>
 
-        <p className="text-center text-xs text-slate-500">
-          By registering, you agree to our{" "}
-          <a href="#" className="underline hover:text-primary-token">
-            Terms of Service
-          </a>{" "}
-          and{" "}
-          <a href="#" className="underline hover:text-primary-token">
-            Privacy Policy
-          </a>
-          .
-        </p>
-      </form>
-
-      <div className="text-center mt-6 pt-5 border-t border-slate-200">
-        <p className="text-sm text-slate-600">
-          Already have an account?{" "}
-          <Link
-            href="/login"
-            className="font-semibold text-primary-token hover:underline"
+          <button
+            type="submit"
+            className="w-full py-3.5 rounded-xl font-semibold text-white btn-primary-solid"
           >
-            Sign in
-          </Link>
-        </p>
-      </div>
-    </AuthLayout>
+            Create Account
+          </button>
+
+          <p className="text-center text-xs text-slate-500">
+            By registering, you agree to our{" "}
+            <a href="#" className="underline hover:text-primary-token">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="#" className="underline hover:text-primary-token">
+              Privacy Policy
+            </a>
+            .
+          </p>
+        </form>
+
+        <div className="text-center mt-6 pt-5 border-t border-slate-200">
+          <p className="text-sm text-slate-600">
+            Already have an account?{" "}
+            <Link
+              href="/login"
+              className="font-semibold text-primary-token hover:underline"
+            >
+              Sign in
+            </Link>
+          </p>
+        </div>
+      </AuthLayout>
+      <Footer />
+    </>
   );
 }

@@ -129,6 +129,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import AuthLayout from "@/components/AuthLayout";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -151,7 +153,8 @@ export default function LoginPage() {
     setErrors({});
 
     const newErrors = {};
-    if (!form.usernameOrEmail) newErrors.usernameOrEmail = "Username or email is required.";
+    if (!form.usernameOrEmail)
+      newErrors.usernameOrEmail = "Username or email is required.";
     if (!form.password) newErrors.password = "Password is required.";
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
@@ -162,91 +165,109 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayout title="Log In">
-      {successMessage && (
-        <div className="mb-5 flex items-start justify-between gap-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
-          <span>{successMessage}</span>
-          <button
-            type="button"
-            onClick={() => setSuccessMessage("")}
-            className="text-green-500 hover:text-green-700"
-            aria-label="Dismiss"
-          >
-            ×
-          </button>
-        </div>
-      )}
+    <>
+      <Navbar />
+      <AuthLayout title="Log In">
+        {successMessage && (
+          <div className="mb-5 flex items-start justify-between gap-3 rounded-lg bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
+            <span>{successMessage}</span>
+            <button
+              type="button"
+              onClick={() => setSuccessMessage("")}
+              className="text-green-500 hover:text-green-700"
+              aria-label="Dismiss"
+            >
+              ×
+            </button>
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label htmlFor="usernameOrEmail" className="block text-sm font-medium text-slate-700 mb-1.5">
-            Username or Email
-          </label>
-          <input
-            id="usernameOrEmail"
-            name="usernameOrEmail"
-            type="text"
-            value={form.usernameOrEmail}
-            onChange={handleChange}
-            placeholder="name@example.com"
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-(--c-primary) focus:border-transparent transition-shadow"
-          />
-          {errors.usernameOrEmail && (
-            <p className="text-xs text-red-500 mt-1.5">{errors.usernameOrEmail}</p>
-          )}
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1.5">
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-(--c-primary) focus:border-transparent transition-shadow"
-          />
-          {errors.password && (
-            <p className="text-xs text-red-500 mt-1.5">{errors.password}</p>
-          )}
-        </div>
-
-        <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm text-slate-600">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label
+              htmlFor="usernameOrEmail"
+              className="block text-sm font-medium text-slate-700 mb-1.5"
+            >
+              Username or Email
+            </label>
             <input
-              type="checkbox"
-              name="rememberMe"
-              checked={form.rememberMe}
+              id="usernameOrEmail"
+              name="usernameOrEmail"
+              type="text"
+              value={form.usernameOrEmail}
               onChange={handleChange}
-              className="rounded border-slate-200 focus:ring-(--c-primary)"
-              style={{ accentColor: "var(--c-primary)" }}
+              placeholder="name@example.com"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-(--c-primary) focus:border-transparent transition-shadow"
             />
-            Remember me
-          </label>
-          <Link href="/forgot-password" className="text-sm font-medium text-primary-token hover:underline">
-            Forgot password?
-          </Link>
+            {errors.usernameOrEmail && (
+              <p className="text-xs text-red-500 mt-1.5">
+                {errors.usernameOrEmail}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-slate-700 mb-1.5"
+            >
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Password"
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-(--c-primary) focus:border-transparent transition-shadow"
+            />
+            {errors.password && (
+              <p className="text-xs text-red-500 mt-1.5">{errors.password}</p>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2 text-sm text-slate-600">
+              <input
+                type="checkbox"
+                name="rememberMe"
+                checked={form.rememberMe}
+                onChange={handleChange}
+                className="rounded border-slate-200 focus:ring-(--c-primary)"
+                style={{ accentColor: "var(--c-primary)" }}
+              />
+              Remember me
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-sm font-medium text-primary-token hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3.5 rounded-xl font-semibold text-white btn-primary-solid"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div className="text-center mt-6">
+          <p className="text-sm text-slate-600">
+            Don&apos;t have an account?{" "}
+            <Link
+              href="/register"
+              className="font-semibold text-primary-token hover:underline"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
-
-        <button
-          type="submit"
-          className="w-full py-3.5 rounded-xl font-semibold text-white btn-primary-solid"
-        >
-          Sign In
-        </button>
-      </form>
-
-      <div className="text-center mt-6">
-        <p className="text-sm text-slate-600">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-semibold text-primary-token hover:underline">
-            Sign up
-          </Link>
-        </p>
-      </div>
-    </AuthLayout>
+      </AuthLayout>
+      <Footer />
+    </>
   );
 }

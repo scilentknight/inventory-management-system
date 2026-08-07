@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Boxes, Menu, X } from "lucide-react";
@@ -15,8 +16,13 @@ export default function Navbar() {
             href="/"
             className="navbar-brand flex items-center gap-2 text-xl"
           >
-            <Boxes className="w-6 h-8 text-primary-token" />
-            {/* CaféManager */}
+            <Boxes className="w-6 h-8 text-primary-token hover:scale-110" />
+            {/* <Image
+              src="/logo.png"
+              alt="InventoryPro Logo"
+              width={50}
+              height={50}
+            /> */}
             {/* Inventory Manager */}
             {/* StockFlow */}
             {/* IMS Pro */}

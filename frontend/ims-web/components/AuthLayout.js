@@ -4,7 +4,7 @@ import { Boxes } from "lucide-react";
 export default function AuthLayout({ title, subtitle, children }) {
   return (
     <div className="bg-linear-to-br from-slate-50 via-white to-blue-50 h-screen overflow-hidden">
-      <div className="max-w-2xl mx-auto h-full flex flex-col justify-center px-4 pt-24 pb-6">
+      <div className="max-w-xl mx-auto h-full flex flex-col justify-center px-4 pt-24 pb-6">
         {/* Logo */}
         <Link
           href="/"
