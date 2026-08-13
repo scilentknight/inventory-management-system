@@ -1,4 +1,6 @@
 using IMS.Api.Data;
+using IMS.Api.Repositories;
+using IMS.Api.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Api
@@ -16,10 +18,29 @@ namespace IMS.Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // Add CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowNextJs",
+                    policy =>
+                    {
+                        policy
+                            .WithOrigins("http://localhost:3000")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             // Register ApplicationDbContext with Dependency Injection and configure SQL Server
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Repository registrations
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            // Service registrations
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             var app = builder.Build();
 
@@ -39,6 +60,8 @@ namespace IMS.Api
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowNextJs");
 
             app.UseAuthorization();
 

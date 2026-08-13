@@ -3,7 +3,7 @@
 namespace IMS.Api.DTOs.Category
 {
     //Used for listing categories efficiently
-    public class CategoryListDto
+    public class ListCategoryDto
     {
         public int Id { get; set; }
 

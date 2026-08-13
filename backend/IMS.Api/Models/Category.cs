@@ -5,6 +5,7 @@ namespace IMS.Api.Models
     public class Category
     {
         public int Id { get; set; }
+        //Id INT IDENTITY(1, 1)
 
         //When a new Category object is created, initialize CategoryCode with an empty string.
         public string CategoryCode { get; set; } = string.Empty;
