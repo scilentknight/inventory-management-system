@@ -28,6 +28,8 @@ namespace IMS.Api.Services
                 CategoryCode = x.CategoryCode,
                 Name = x.Name,
                 ImageUrl = x.ImageUrl,
+                //MobileImageUrl = x.MobileImageUrl,
+                ParentCategoryId = x.ParentCategoryId,
                 DisplayOrder = x.DisplayOrder,
                 IsActive = x.IsActive
             });
@@ -44,7 +46,7 @@ namespace IMS.Api.Services
         }
 
         public async Task<CategoryDto> CreateAsync(
-            CategoryCreateDto dto,
+            CreateCategoryDto dto,
             int createdBy)
         {
             // Check duplicate category code
@@ -92,6 +94,11 @@ namespace IMS.Api.Services
             {
                 category.ImageUrl =
                     await SaveImageAsync(dto.Image);
+            }
+            if (dto.MobileImage != null)
+            {
+                category.MobileImageUrl =
+                    await SaveMobileImageAsync(dto.MobileImage);
             }
 
             await _repository.AddAsync(category);
@@ -224,6 +231,35 @@ namespace IMS.Api.Services
             await image.CopyToAsync(stream);
 
             return $"/uploads/categories/{fileName}";
+        }
+
+        private async Task<string> SaveMobileImageAsync(
+        IFormFile image)
+        {
+            var uploadsFolder = Path.Combine(
+                _environment.WebRootPath ?? "wwwroot",
+                "uploads",
+                "categories",
+                "mobile");
+
+            Directory.CreateDirectory(uploadsFolder);
+
+            var extension = Path.GetExtension(image.FileName);
+
+            var fileName = $"{Guid.NewGuid()}{extension}";
+
+            var filePath = Path.Combine(
+                uploadsFolder,
+                fileName);
+
+            await using var stream =
+                new FileStream(
+                    filePath,
+                    FileMode.Create);
+
+            await image.CopyToAsync(stream);
+
+            return $"/uploads/categories/mobile/{fileName}";
         }
 
         private static string GenerateSlug(string value)

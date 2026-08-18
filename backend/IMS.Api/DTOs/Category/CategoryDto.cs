@@ -18,6 +18,7 @@
         public string? ParentCategoryName { get; set; }
 
         public string? ImageUrl { get; set; }
+        public string? MobileImageUrl { get; set; }
 
         public int DisplayOrder { get; set; }
 

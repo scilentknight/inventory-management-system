@@ -10,7 +10,7 @@ namespace IMS.Api.Services
         Task<CategoryDto?> GetByIdAsync(int id);
 
         Task<CategoryDto> CreateAsync(
-            CategoryCreateDto dto,
+            CreateCategoryDto dto,
             int createdBy);
 
         Task<CategoryDto?> UpdateAsync(

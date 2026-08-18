@@ -83,7 +83,7 @@ namespace IMS.Api.Controllers
         // POST: api/categories
         [HttpPost]
         public async Task<ActionResult<CategoryDto>> CreateCategory(
-            [FromForm] CategoryCreateDto dto)
+            [FromForm] CreateCategoryDto dto)
         {
             try
             {

@@ -5,9 +5,7 @@ namespace IMS.Api.DTOs.Category
     //Used when updating a category
     public class UpdateCategoryDto
     {
-        [Required]
-        public int Id { get; set; }
-
+       
         [Required]
         [StringLength(150)]
         public string Name { get; set; } = string.Empty;
@@ -23,5 +21,6 @@ namespace IMS.Api.DTOs.Category
         public bool IsActive { get; set; }
 
         public IFormFile? Image { get; set; }
+        public IFormFile? MobileImage { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace IMS.Api.DTOs.Category
+﻿namespace IMS.Api.DTOs.Category
 {
     //Used for listing categories efficiently
     public class ListCategoryDto
@@ -12,6 +10,10 @@ namespace IMS.Api.DTOs.Category
         public string Name { get; set; } = string.Empty;
 
         public string? ImageUrl { get; set; }
+
+        public string? MobileImageUrl { get; set; }
+
+        public int? ParentCategoryId { get; set; }
 
         public int DisplayOrder { get; set; }
 

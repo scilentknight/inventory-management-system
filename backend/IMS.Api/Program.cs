@@ -31,7 +31,7 @@ namespace IMS.Api
                     });
             });
 
-            // Register ApplicationDbContext with Dependency Injection and configure SQL Server
+            // Register ApplicationDbContext with Dependency Injection and Configure SQL Server
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
