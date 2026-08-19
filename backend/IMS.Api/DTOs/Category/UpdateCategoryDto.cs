@@ -16,7 +16,7 @@ namespace IMS.Api.DTOs.Category
         public int? ParentCategoryId { get; set; }
 
         [Range(0, 9999)]
-        public int DisplayOrder { get; set; }
+        public int? DisplayOrder { get; set; }
 
         public bool IsActive { get; set; }
 

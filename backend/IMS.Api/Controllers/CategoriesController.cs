@@ -1,50 +1,13 @@
-﻿//using IMS.Api.Data;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-
-//namespace IMS.Api.Controllers
-//{
-//    [ApiController]
-//    [Route("api/[controller]")]
-//    public class CategoriesController : ControllerBase
-//    {
-//        private readonly ApplicationDbContext _context;
-
-//        public CategoriesController(ApplicationDbContext context)
-//        {
-//            _context = context;
-//        }
-
-
-//        [HttpGet]
-//        public async Task<IActionResult> GetCategories()
-//        {
-//            var categories = await _context.Categories
-//                .Where(x => !x.IsDeleted)
-//                .Select(x => new
-//                {
-//                    x.Id,
-//                    x.CategoryCode,
-//                    x.Name,
-//                    x.Slug,
-//                    x.Description,
-//                    x.IsActive
-//                })
-//                .ToListAsync();
-
-//            return Ok(categories);
-//        }
-//    }
-//}
-
-using IMS.Api.DTOs.Category;
-using IMS.Api.Services;
+﻿using IMS.Api.DTOs.Category;
+using IMS.Api.Services.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 // Your controller becomes much cleaner.
 namespace IMS.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CategoriesController : ControllerBase
@@ -158,7 +121,11 @@ namespace IMS.Api.Controllers
                 });
             }
 
-            return NoContent();
+            //return NoContent();
+            return Ok(new
+            {
+                message = $"Category {id} deleted successfully."
+            });
         }
 
         private int GetCurrentUserId()

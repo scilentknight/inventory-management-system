@@ -76,7 +76,7 @@ namespace IMS.Api.Data.Configurations
             // Display Order
             // ==============================
             builder.Property(c => c.DisplayOrder)
-                .IsRequired()
+                .IsRequired(false)
                 .HasDefaultValue(0);
 
 

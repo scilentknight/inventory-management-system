@@ -25,7 +25,7 @@ namespace IMS.Api.DTOs.Category
         public IFormFile? MobileImage { get; set; }
 
         [Range(0, int.MaxValue)]
-        public int DisplayOrder { get; set; }
+        public int? DisplayOrder { get; set; }
 
         public bool IsActive { get; set; } = true;
     }

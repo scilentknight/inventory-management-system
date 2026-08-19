@@ -17,9 +17,10 @@ namespace IMS.Api.Models
         public int? ParentCategoryId { get; set; }
 
         public string? ImageUrl { get; set; }
+
         public string? MobileImageUrl { get; set; }
 
-        public int DisplayOrder { get; set; }
+        public int? DisplayOrder { get; set; }
 
         public bool IsActive { get; set; } = true;
 
