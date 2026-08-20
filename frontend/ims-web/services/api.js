@@ -1,50 +1,10 @@
-// services/api.ts page
-
-// const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL!;
-
-// export async function apiFetch(
-//   endpoint: string,
-//   options?: RequestInit
-// ) {
-//   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-//     ...options,
-//     headers: {
-//       "Content-Type": "application/json",
-//       ...(options?.headers || {})
-//     }
-//   });
-
-//   if (!response.ok) {
-//     throw new Error("API request failed");
-//   }
-
-//   return response.json();
-// }
-
-// const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
-// export async function apiFetch(endpoint, options = {}) {
-//   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-//     ...options,
-//     headers: {
-//       "Content-Type": "application/json",
-//       ...(options.headers || {}),
-//     },
-//   });
-
-//   if (!response.ok) {
-//     throw new Error("API request failed");
-//   }
-
-//   return response.json();
-// }
-
-// new
-
 const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function apiFetch(endpoint, options = {}) {
   const token = localStorage.getItem("token");
+
+  console.log("API URL:", API_URL);
+  console.log("TOKEN:", token);
 
   const headers = {
     "Content-Type": "application/json",
@@ -55,13 +15,21 @@ export async function apiFetch(endpoint, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
+  console.log("REQUEST HEADERS:", headers);
+
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
   });
 
+  console.log("STATUS:", response.status);
+
   if (!response.ok) {
-    throw new Error("API request failed");
+    const errorText = await response.text();
+
+    console.error("API ERROR:", errorText);
+
+    throw new Error(`API request failed: ${response.status}`);
   }
 
   return response.json();
