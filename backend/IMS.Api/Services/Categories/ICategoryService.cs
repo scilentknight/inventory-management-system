@@ -18,6 +18,11 @@ namespace IMS.Api.Services.Categories
             UpdateCategoryDto dto,
             int updatedBy);
 
+        Task<CategoryDto?> PatchAsync(
+            int id,
+            PatchCategoryDto dto,
+            int updatedBy);
+
         Task<bool> DeleteAsync(
             int id,
             int deletedBy);

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-// Your controller becomes much cleaner.
 namespace IMS.Api.Controllers
 {
     [Authorize]
@@ -25,7 +24,11 @@ namespace IMS.Api.Controllers
         {
             var categories = await _service.GetAllAsync();
 
-            return Ok(categories);
+            return Ok(new
+            {
+                message = "Categories retrieved successfully.",
+                data = categories
+            });
         }
 
         // GET: api/categories/5
@@ -35,12 +38,18 @@ namespace IMS.Api.Controllers
             var category = await _service.GetByIdAsync(id);
 
             if (category == null)
+            {
                 return NotFound(new
                 {
                     message = "Category not found."
                 });
+            }
 
-            return Ok(category);
+            return Ok(new
+            {
+                message = "Category retrieved successfully.",
+                data = category
+            });
         }
 
         // POST: api/categories
@@ -58,7 +67,11 @@ namespace IMS.Api.Controllers
                 return CreatedAtAction(
                     nameof(GetCategory),
                     new { id = category.Id },
-                    category);
+                    new
+                    {
+                        message = "Category created successfully.",
+                        data = category
+                    });
             }
             catch (InvalidOperationException ex)
             {
@@ -93,7 +106,50 @@ namespace IMS.Api.Controllers
                     });
                 }
 
-                return Ok(category);
+                return Ok(new
+                {
+                    message = "Category updated successfully.",
+                    data = category
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
+        }
+
+        // PATCH: api/categories/5
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult<CategoryDto>> PatchCategory(
+            int id,
+            [FromForm] PatchCategoryDto dto)
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+
+                var category =
+                    await _service.PatchAsync(
+                        id,
+                        dto,
+                        userId);
+
+                if (category == null)
+                {
+                    return NotFound(new
+                    {
+                        message = "Category not found."
+                    });
+                }
+
+                return Ok(new
+                {
+                    message = "Category updated successfully.",
+                    data = category
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -121,7 +177,6 @@ namespace IMS.Api.Controllers
                 });
             }
 
-            //return NoContent();
             return Ok(new
             {
                 message = $"Category {id} deleted successfully."

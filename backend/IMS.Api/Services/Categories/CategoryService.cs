@@ -169,6 +169,96 @@ namespace IMS.Api.Services.Categories
             return MapToDto(updatedCategory!);
         }
 
+        public async Task<CategoryDto?> PatchAsync(
+    int id,
+    PatchCategoryDto dto,
+    int updatedBy)
+        {
+            var category = await _repository.GetByIdAsync(id);
+
+            if (category == null)
+                return null;
+
+            // Name
+            if (dto.Name != null)
+            {
+                category.Name = dto.Name.Trim();
+
+                // Regenerate slug when name changes
+                category.Slug = GenerateSlug(category.Name);
+            }
+
+            // Description
+            if (dto.Description != null)
+            {
+                category.Description = dto.Description.Trim();
+            }
+
+            // Parent Category
+            if (dto.ParentCategoryId.HasValue)
+            {
+                if (dto.ParentCategoryId.Value == id)
+                {
+                    throw new InvalidOperationException(
+                        "A category cannot be its own parent.");
+                }
+
+                var parentExists =
+                    await _repository.ExistsAsync(
+                        dto.ParentCategoryId.Value);
+
+                if (!parentExists)
+                {
+                    throw new InvalidOperationException(
+                        "The selected parent category does not exist.");
+                }
+
+                category.ParentCategoryId =
+                    dto.ParentCategoryId.Value;
+            }
+
+            // Display Order
+            if (dto.DisplayOrder.HasValue)
+            {
+                category.DisplayOrder =
+                    dto.DisplayOrder.Value;
+            }
+
+            // Active Status
+            if (dto.IsActive.HasValue)
+            {
+                category.IsActive =
+                    dto.IsActive.Value;
+            }
+
+            // Image
+            if (dto.Image != null)
+            {
+                category.ImageUrl =
+                    await SaveImageAsync(dto.Image);
+            }
+
+            // Mobile Image
+            if (dto.MobileImage != null)
+            {
+                category.MobileImageUrl =
+                    await SaveMobileImageAsync(dto.MobileImage);
+            }
+
+            // Audit
+            category.UpdatedAt = DateTime.UtcNow;
+            category.UpdatedBy = updatedBy;
+
+            _repository.Update(category);
+
+            await _repository.SaveChangesAsync();
+
+            var updatedCategory =
+                await _repository.GetByIdAsync(id);
+
+            return MapToDto(updatedCategory!);
+        }
+
         public async Task<bool> DeleteAsync(
             int id,
             int deletedBy)

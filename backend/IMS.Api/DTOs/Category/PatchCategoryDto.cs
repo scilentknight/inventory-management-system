@@ -2,23 +2,20 @@
 
 namespace IMS.Api.DTOs.Category
 {
-    //Used when updating a category
-    public class UpdateCategoryDto
+    public class PatchCategoryDto
     {
-       
-        [Required]
-        [StringLength(150)]
-        public string Name { get; set; } = string.Empty;
+        [StringLength(150, MinimumLength = 2)]
+        public string? Name { get; set; }
 
-        [StringLength(500)]
+        [StringLength(1000)]
         public string? Description { get; set; }
 
         public int? ParentCategoryId { get; set; }
 
-        [Range(0, 9999)]
+        [Range(0, int.MaxValue)]
         public int? DisplayOrder { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
 
         public IFormFile? Image { get; set; }
 

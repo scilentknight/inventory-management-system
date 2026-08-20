@@ -21,7 +21,11 @@ namespace IMS.Api.Controllers
         {
             var users = await _service.GetAllAsync();
 
-            return Ok(users);
+            return Ok(new
+            {
+                message = "Users retrieved successfully.",
+                data = users
+            });
         }
 
         // GET: api/Users/5
@@ -38,7 +42,11 @@ namespace IMS.Api.Controllers
                 });
             }
 
-            return Ok(user);
+            return Ok(new
+            {
+                message = "User retrieved successfully.",
+                data = user
+            });
         }
 
         // POST: api/Users
@@ -54,7 +62,11 @@ namespace IMS.Api.Controllers
                 return CreatedAtAction(
                     nameof(GetUser),
                     new { id = user.Id },
-                    user);
+                    new
+                    {
+                        message = "User created successfully.",
+                        data = user
+                    });
             }
             catch (InvalidOperationException ex)
             {
@@ -84,7 +96,11 @@ namespace IMS.Api.Controllers
                     });
                 }
 
-                return Ok(user);
+                return Ok(new
+                {
+                    message = "User updated successfully.",
+                    data = user
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -110,7 +126,10 @@ namespace IMS.Api.Controllers
                 });
             }
 
-            return NoContent();
+            return Ok(new
+            {
+                message = $"User {id} deleted successfully."
+            });
         }
     }
 }

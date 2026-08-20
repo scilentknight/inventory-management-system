@@ -135,6 +135,63 @@ namespace IMS.Api.Services.Brands
             return MapToDto(updatedBrand!);
         }
 
+        public async Task<BrandDto?> PatchAsync(
+            int id,
+            PatchBrandDto dto,
+            int updatedBy)
+            {
+            var brand = await _repository.GetByIdAsync(id);
+
+            if (brand == null)
+                return null;
+
+            if (dto.Name != null)
+            {
+                brand.Name = dto.Name.Trim();
+            }
+
+            if (dto.Description != null)
+            {
+                brand.Description = dto.Description.Trim();
+            }
+
+            if (dto.Website != null)
+            {
+                brand.Website = dto.Website.Trim();
+            }
+
+            if (dto.DisplayOrder.HasValue)
+            {
+                brand.DisplayOrder = dto.DisplayOrder.Value;
+            }
+
+            if (dto.IsActive.HasValue)
+            {
+                brand.IsActive = dto.IsActive.Value;
+            }
+
+            if (dto.Logo != null)
+            {
+                brand.LogoUrl = await SaveLogoAsync(dto.Logo);
+            }
+
+            if (dto.MobileLogo != null)
+            {
+                brand.MobileLogoUrl =
+                    await SaveMobileLogoAsync(dto.MobileLogo);
+            }
+
+            brand.UpdatedAt = DateTime.UtcNow;
+            brand.UpdatedBy = updatedBy;
+
+            _repository.Update(brand);
+
+            await _repository.SaveChangesAsync();
+
+            var updatedBrand = await _repository.GetByIdAsync(id);
+
+            return MapToDto(updatedBrand!);
+        }
         public async Task<bool> DeleteAsync(
             int id,
             int deletedBy)

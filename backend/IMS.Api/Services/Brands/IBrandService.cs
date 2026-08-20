@@ -18,6 +18,11 @@ namespace IMS.Api.Services.Brands
             UpdateBrandDto dto,
             int updatedBy);
 
+        Task<BrandDto?> PatchAsync(
+            int id,
+            PatchBrandDto dto,
+            int updatedBy);
+
         Task<bool> DeleteAsync(
             int id,
             int deletedBy);

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
-// Your controller becomes much cleaner.
 namespace IMS.Api.Controllers
 {
     [Authorize]
@@ -25,7 +24,11 @@ namespace IMS.Api.Controllers
         {
             var brands = await _service.GetAllAsync();
 
-            return Ok(brands);
+            return Ok(new
+            {
+                message = "Brands retrieved successfully.",
+                data = brands
+            });
         }
 
         // GET: api/brands/5
@@ -35,12 +38,18 @@ namespace IMS.Api.Controllers
             var brand = await _service.GetByIdAsync(id);
 
             if (brand == null)
+            {
                 return NotFound(new
                 {
                     message = "Brand not found."
                 });
+            }
 
-            return Ok(brand);
+            return Ok(new
+            {
+                message = "Brand retrieved successfully.",
+                data = brand
+            });
         }
 
         // POST: api/brands
@@ -58,7 +67,11 @@ namespace IMS.Api.Controllers
                 return CreatedAtAction(
                     nameof(GetBrand),
                     new { id = brand.Id },
-                    brand);
+                    new
+                    {
+                        message = "Brand created successfully.",
+                        data = brand
+                    });
             }
             catch (InvalidOperationException ex)
             {
@@ -93,7 +106,50 @@ namespace IMS.Api.Controllers
                     });
                 }
 
-                return Ok(brand);
+                return Ok(new
+                {
+                    message = "Brand updated successfully.",
+                    data = brand
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
+        }
+
+        // PATCH: api/brands/5
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult<BrandDto>> PatchBrand(
+            int id,
+            [FromForm] PatchBrandDto dto)
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+
+                var brand =
+                    await _service.PatchAsync(
+                        id,
+                        dto,
+                        userId);
+
+                if (brand == null)
+                {
+                    return NotFound(new
+                    {
+                        message = "Brand not found."
+                    });
+                }
+
+                return Ok(new
+                {
+                    message = "Brand updated successfully.",
+                    data = brand
+                });
             }
             catch (InvalidOperationException ex)
             {
@@ -121,7 +177,10 @@ namespace IMS.Api.Controllers
                 });
             }
 
-            return NoContent();
+            return Ok(new
+            {
+                message = $"Brand {id} deleted successfully."
+            });
         }
 
         private int GetCurrentUserId()
