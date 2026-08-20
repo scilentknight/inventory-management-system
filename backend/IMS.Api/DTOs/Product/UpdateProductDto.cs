@@ -1,0 +1,49 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IMS.Api.DTOs.Product
+{
+    //Used when updating a product
+    public class UpdateProductDto
+    {
+        [Required]
+        [StringLength(200)]
+        public string Name { get; set; } = string.Empty;
+
+        [StringLength(2000)]
+        public string? Description { get; set; }
+
+        // Optional - selected from category dropdown
+        public int? CategoryId { get; set; }
+
+        // Optional - selected from brand dropdown
+        public int? BrandId { get; set; }
+
+        [StringLength(20)]
+        public string? Unit { get; set; }
+
+        [Required]
+        [Range(0, double.MaxValue)]
+        public decimal Price { get; set; }
+
+        [Range(0, double.MaxValue)]
+        public decimal? CostPrice { get; set; }
+
+        [Range(0, double.MaxValue)]
+        public decimal? DiscountPrice { get; set; }
+
+        [Range(0, int.MaxValue)]
+        public int StockQuantity { get; set; }
+
+        [Range(0, int.MaxValue)]
+        public int? ReorderLevel { get; set; }
+
+        [Range(0, 9999)]
+        public int? DisplayOrder { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public IFormFile? Image { get; set; }
+
+        public IFormFile? MobileImage { get; set; }
+    }
+}
