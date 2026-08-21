@@ -10,6 +10,85 @@ namespace IMS.Api.Data
             // Apply pending migrations
             await context.Database.MigrateAsync();
 
+            // =========================================================
+            // Seed Roles
+            // =========================================================
+
+            if (!await context.Roles.AnyAsync())
+            {
+                var roles = new List<Role>
+    {
+        new Role
+        {
+            Name = "SUPER_ADMIN",
+            Description = "Full system access",
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        },
+        new Role
+        {
+            Name = "ADMIN",
+            Description = "Administrative access",
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        },
+        new Role
+        {
+            Name = "STAFF",
+            Description = "Standard staff access",
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        }
+    };
+
+                await context.Roles.AddRangeAsync(roles);
+                await context.SaveChangesAsync();
+            }
+
+
+            // =========================================================
+            // Seed Permissions
+            // =========================================================
+
+            if (!await context.Permissions.AnyAsync())
+            {
+                var permissions = new List<Permission>
+    {
+        new Permission { Name = "PRODUCT_VIEW", Module = "Product", IsActive = true, CreatedAt = DateTime.UtcNow },
+        new Permission { Name = "PRODUCT_CREATE", Module = "Product", IsActive = true, CreatedAt = DateTime.UtcNow },
+        new Permission { Name = "PRODUCT_EDIT", Module = "Product", IsActive = true, CreatedAt = DateTime.UtcNow },
+        new Permission { Name = "PRODUCT_DELETE", Module = "Product", IsActive = true, CreatedAt = DateTime.UtcNow },
+        new Permission { Name = "USER_MANAGE", Module = "User", IsActive = true, CreatedAt = DateTime.UtcNow }
+    };
+
+                await context.Permissions.AddRangeAsync(permissions);
+                await context.SaveChangesAsync();
+            }
+
+
+            // =========================================================
+            // Seed RolePermissions (SUPER_ADMIN gets everything)
+            // =========================================================
+
+            if (!await context.RolePermissions.AnyAsync())
+            {
+                var superAdminRole = await context.Roles
+                    .FirstAsync(r => r.Name == "SUPER_ADMIN");
+
+                var allPermissions = await context.Permissions.ToListAsync();
+
+                var rolePermissions = allPermissions
+                    .Select(p => new RolePermission
+                    {
+                        RoleId = superAdminRole.Id,
+                        PermissionId = p.Id
+                    })
+                    .ToList();
+
+                await context.RolePermissions.AddRangeAsync(rolePermissions);
+                await context.SaveChangesAsync();
+            }
+
 
             // =========================================================
             // Seed Admin User
@@ -17,11 +96,14 @@ namespace IMS.Api.Data
 
             if (!await context.Users.AnyAsync())
             {
+                var superAdminRole = await context.Roles
+                    .FirstAsync(r => r.Name == "SUPER_ADMIN");
+
                 var adminUser = new User
                 {
                     Email = "scilentknight512@gmail.com",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123"),
-                    Role = "SUPER_ADMIN",
+                    RoleId = superAdminRole.Id,
                     IsActive = true,
                     CreatedAt = DateTime.UtcNow
                 };

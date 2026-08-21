@@ -47,14 +47,14 @@ namespace IMS.Api.Services.Auths
             // Generate JWT
             var token = _jwtService.GenerateToken(
                 user.Id,
-                user.Role);
+                user.Role.Name);
 
             return new AuthResponseDto
             {
                 Token = token,
                 UserId = user.Id,
                 Email = user.Email,
-                Role = user.Role
+                Role = user.Role.Name
             };
         }
     }

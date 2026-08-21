@@ -1,6 +1,8 @@
 using IMS.Api.Data;
 using IMS.Api.Services.Auths;
 using IMS.Api.Services.Users;
+using IMS.Api.Services.Roles;
+using IMS.Api.Services.Permissions;
 using IMS.Api.Services.Categories;
 using IMS.Api.Services.Brands;
 using IMS.Api.Services.Units;
@@ -8,6 +10,8 @@ using IMS.Api.Services.Products;
 
 using IMS.Api.Repositories.Auths;
 using IMS.Api.Repositories.Users;
+using IMS.Api.Repositories.Roles;
+using IMS.Api.Repositories.Permissions;
 using IMS.Api.Repositories.Categories;
 using IMS.Api.Repositories.Brands;
 using IMS.Api.Repositories.Units;
@@ -108,6 +112,8 @@ namespace IMS.Api
             builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<IPermissionService, PermissionService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IBrandService, BrandService>();
             builder.Services.AddScoped<IUnitService, UnitService>();
@@ -117,6 +123,8 @@ namespace IMS.Api
 
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IBrandRepository, BrandRepository>();
             builder.Services.AddScoped<IUnitRepository, UnitRepository>();

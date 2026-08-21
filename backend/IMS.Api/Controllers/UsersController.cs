@@ -111,6 +111,40 @@ namespace IMS.Api.Controllers
             }
         }
 
+        // PUT: api/Users/5/role
+        [HttpPut("{id:int}/role")]
+        public async Task<ActionResult<UserDto>> AssignRole(
+            int id,
+            [FromBody] AssignRoleDto dto)
+        {
+            try
+            {
+                var user =
+                    await _service.AssignRoleAsync(id, dto);
+
+                if (user == null)
+                {
+                    return NotFound(new
+                    {
+                        message = "User not found."
+                    });
+                }
+
+                return Ok(new
+                {
+                    message = "Role assigned successfully.",
+                    data = user
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
+        }
+
         // DELETE: api/Users/5
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteUser(int id)

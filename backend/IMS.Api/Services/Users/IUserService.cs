@@ -8,11 +8,16 @@ namespace IMS.Api.Services.Users
 
         Task<UserDto?> GetByIdAsync(int id);
 
-        Task<UserDto> CreateAsync(CreateUserDto dto);
+        Task<UserDto> CreateAsync(
+            CreateUserDto dto);
 
         Task<UserDto?> UpdateAsync(
             int id,
             UpdateUserDto dto);
+
+        Task<UserDto?> AssignRoleAsync(
+            int userId,
+            AssignRoleDto dto);
 
         Task<bool> DeleteAsync(int id);
     }

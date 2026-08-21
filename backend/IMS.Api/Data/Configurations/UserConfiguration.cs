@@ -33,9 +33,13 @@ namespace IMS.Api.Data.Configurations
             // ==============================
             // Role
             // ==============================
-            builder.Property(u => u.Role)
-                .IsRequired()
-                .HasMaxLength(50);
+            builder.Property(u => u.RoleId)
+                .IsRequired();
+
+            builder.HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // ==============================
             // Is Active
