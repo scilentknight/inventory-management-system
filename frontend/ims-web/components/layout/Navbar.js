@@ -17,15 +17,6 @@ export default function Navbar() {
             className="navbar-brand flex items-center gap-2 text-xl"
           >
             <Boxes className="w-6 h-8 text-primary-token hover:scale-110" />
-            {/* <Image
-              src="/logo.png"
-              alt="InventoryPro Logo"
-              width={50}
-              height={50}
-            /> */}
-            {/* Inventory Manager */}
-            {/* StockFlow */}
-            {/* IMS Pro */}
             InventoryPro
           </Link>
 

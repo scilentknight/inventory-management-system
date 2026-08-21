@@ -1,13 +1,5 @@
 @import "tailwindcss";
-
-/* ═══════════════════════════════════════════════════════════
-   ROOT DESIGN TOKENS
-   NOTE: these are not present in the landing.css you sent —
-   that file only *uses* var(--c-primary) etc. These values are
-   inferred from the rgba()/hex literals already in landing.css
-   (e.g. rgba(59,130,246,..) => #3b82f6). Send the real
-   variables file and I'll swap these for the exact values.
-   ═══════════════════════════════════════════════════════════ */
+@import "../styles/admin-theme.css";
 :root {
   --c-primary: #3b82f6;
   --c-dark: #0f172a;

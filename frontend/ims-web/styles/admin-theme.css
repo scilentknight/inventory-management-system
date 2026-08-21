@@ -1,0 +1,80 @@
+/* /* ═══════════════ ADMIN THEME TOKENS (Tailwind v4) ═══════════════
+   Tailwind v4 has no tailwind.config.js — theme tokens are registered
+   here via @theme, then used as normal utilities (bg-bg-sidebar, w-sidebar,
+   z-header, duration-150, etc). Import this AFTER "tailwindcss" in
+   app/globals.css:
+
+     @import "tailwindcss";
+     @import "./admin-theme.css";   (adjust path to wherever you place this file)
+
+   ⚠️ PLACEHOLDER VALUES: I don't have your actual site.css :root block,
+   so most raw values below are best guesses. The one value pulled directly
+   from your MVC admin.css is --c-danger (rgba(239,68,68,...) = Tailwind red-500).
+   Swap the values in :root / .dark once you share your real site.css —
+   components only ever reference the token names, never raw hex, so this
+   is the only file you need to touch.
+*/
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* colors -> generates bg-*, text-*, border-*, ring-* utilities,
+     and supports opacity modifiers e.g. bg-danger/10 */
+  --color-bg-main: var(--bg-main);
+  --color-bg-sidebar: var(--bg-sidebar);
+  --color-bg-card: var(--bg-card);
+  --color-border-theme: var(--border-color);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
+  --color-text-sidebar: var(--text-sidebar);
+  --color-text-sidebar-active: var(--text-sidebar-active);
+  --color-primary: var(--c-primary);
+  --color-danger: var(--c-danger);
+
+  /* spacing -> feeds width, height, margin, padding, gap utilities alike,
+     so w-sidebar / ml-sidebar / etc all resolve from the same token */
+  --spacing-header: 70px;
+  --spacing-footer: 60px;
+  --spacing-sidebar: 260px;
+  --spacing-sidebar-collapsed: 70px;
+
+  /* z-index -> z-sidebar, z-header, z-overlay, z-flyout */
+  --z-sidebar: 1040;
+  --z-header: 1030;
+  --z-overlay: 1035;
+  --z-flyout: 1050;
+
+  /* shadow -> shadow-sidebar, shadow-flyout */
+  --shadow-sidebar: 2px 0 10px rgba(0, 0, 0, 0.1);
+  --shadow-flyout: 4px 4px 10px rgba(0, 0, 0, 0.2);
+
+  /* font -> font-sans */
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  --bg-main: #f3f4f6;      /* page background */
+  --bg-sidebar: #111827;   /* sidebar background */
+  --bg-card: #ffffff;      /* header/card/dropdown background */
+  --border-color: #e5e7eb;
+
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --text-sidebar: #9ca3af;
+  --text-sidebar-active: #ffffff;
+
+  --c-primary: #4f46e5;    /* guessed — swap with your real brand color */
+  --c-danger: #ef4444;     /* confirmed from your admin.css */
+}
+
+.dark {
+  --bg-main: #0f1115;
+  --bg-sidebar: #0b0d12;
+  --bg-card: #1a1d24;
+  --border-color: #2a2e37;
+
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-sidebar: #9ca3af;
+  --text-sidebar-active: #ffffff;
+}
