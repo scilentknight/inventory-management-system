@@ -1,9 +1,11 @@
 ﻿namespace IMS.Api.DTOs.Product
 {
+    // Used when returning a single product's details
     public class ProductDto
     {
-        //Used when returning a single product's details
         public int Id { get; set; }
+
+        public string ProductCode { get; set; } = string.Empty;
 
         public string Sku { get; set; } = string.Empty;
 
@@ -13,15 +15,23 @@
 
         public string? Description { get; set; }
 
+
         public int? CategoryId { get; set; }
 
         public string? CategoryName { get; set; }
+
 
         public int? BrandId { get; set; }
 
         public string? BrandName { get; set; }
 
-        public string? Unit { get; set; }
+
+        public int? UnitId { get; set; }
+
+        public string? UnitName { get; set; }
+
+        public string? UnitSymbol { get; set; }
+
 
         public decimal Price { get; set; }
 
@@ -29,9 +39,10 @@
 
         public decimal? DiscountPrice { get; set; }
 
-        public int StockQuantity { get; set; }
+        public decimal StockQuantity { get; set; }
 
-        public int? ReorderLevel { get; set; }
+        public decimal? ReorderLevel { get; set; }
+
 
         public string? ImageUrl { get; set; }
 

@@ -18,6 +18,8 @@ namespace IMS.Api.Data
 
         public DbSet<Brand> Brands { get; set; }
 
+        public DbSet<Unit> Units { get; set; }
+
         public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,6 +29,7 @@ namespace IMS.Api.Data
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new BrandConfiguration());
+            modelBuilder.ApplyConfiguration(new UnitConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
     }

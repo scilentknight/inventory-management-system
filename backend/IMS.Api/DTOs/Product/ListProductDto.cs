@@ -1,9 +1,11 @@
 ﻿namespace IMS.Api.DTOs.Product
 {
-    //Used for listing products efficiently
+    // Used for listing products efficiently
     public class ListProductDto
     {
         public int Id { get; set; }
+
+        public string ProductCode { get; set; } = string.Empty;
 
         public string Sku { get; set; } = string.Empty;
 
@@ -17,9 +19,15 @@
 
         public int? BrandId { get; set; }
 
+        public int? UnitId { get; set; }
+
+        public string? UnitName { get; set; }
+
+        public string? UnitSymbol { get; set; }
+
         public decimal Price { get; set; }
 
-        public int StockQuantity { get; set; }
+        public decimal StockQuantity { get; set; }
 
         public int? DisplayOrder { get; set; }
 

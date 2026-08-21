@@ -1,8 +1,8 @@
 ﻿using IMS.Api.Models;
 
-//The repository defines what database operations are available.
 namespace IMS.Api.Repositories.Products
 {
+    // The repository defines what database operations are available.
     public interface IProductRepository
     {
         Task<List<Product>> GetAllAsync();
@@ -10,6 +10,8 @@ namespace IMS.Api.Repositories.Products
         Task<Product?> GetByIdAsync(int id);
 
         Task<Product?> GetBySkuAsync(string sku);
+
+        Task<Product?> GetByProductCodeAsync(string productCode);
 
         Task AddAsync(Product product);
 

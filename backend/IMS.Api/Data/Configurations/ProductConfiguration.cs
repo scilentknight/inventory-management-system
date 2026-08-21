@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IMS.Api.Data.Configurations
 {
-    public class ProductConfiguration : IEntityTypeConfiguration<Product>
+    public class ProductConfiguration
+        : IEntityTypeConfiguration<Product>
     {
-        public void Configure(EntityTypeBuilder<Product> builder)
+        public void Configure(
+            EntityTypeBuilder<Product> builder)
         {
             // ==============================
             // Table
@@ -21,6 +23,17 @@ namespace IMS.Api.Data.Configurations
 
             builder.Property(p => p.Id)
                 .ValueGeneratedOnAdd();
+
+
+            // ==============================
+            // Product Code
+            // ==============================
+            builder.Property(p => p.ProductCode)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.HasIndex(p => p.ProductCode)
+                .IsUnique();
 
 
             // ==============================
@@ -61,13 +74,6 @@ namespace IMS.Api.Data.Configurations
 
 
             // ==============================
-            // Unit
-            // ==============================
-            builder.Property(p => p.Unit)
-                .HasMaxLength(20);
-
-
-            // ==============================
             // Pricing
             // ==============================
             builder.Property(p => p.Price)
@@ -86,10 +92,12 @@ namespace IMS.Api.Data.Configurations
             // ==============================
             builder.Property(p => p.StockQuantity)
                 .IsRequired()
+                .HasColumnType("decimal(18,2)")
                 .HasDefaultValue(0);
 
             builder.Property(p => p.ReorderLevel)
-                .IsRequired(false);
+                .IsRequired(false)
+                .HasColumnType("decimal(18,2)");
 
 
             // ==============================
@@ -165,7 +173,7 @@ namespace IMS.Api.Data.Configurations
 
 
             // ==============================
-            // Category Relationship (optional)
+            // Category Relationship
             // ==============================
             builder.HasOne(p => p.Category)
                 .WithMany()
@@ -173,15 +181,11 @@ namespace IMS.Api.Data.Configurations
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
-            // ==============================
-            // Category Index
-            // ==============================
             builder.HasIndex(p => p.CategoryId);
 
 
             // ==============================
-            // Brand Relationship (optional)
+            // Brand Relationship
             // ==============================
             builder.HasOne(p => p.Brand)
                 .WithMany()
@@ -189,11 +193,19 @@ namespace IMS.Api.Data.Configurations
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasIndex(p => p.BrandId);
+
 
             // ==============================
-            // Brand Index
+            // Unit Relationship
             // ==============================
-            builder.HasIndex(p => p.BrandId);
+            builder.HasOne(p => p.Unit)
+                .WithMany(u => u.Products)
+                .HasForeignKey(p => p.UnitId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasIndex(p => p.UnitId);
 
 
             // ==============================

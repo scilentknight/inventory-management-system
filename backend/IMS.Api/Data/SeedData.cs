@@ -10,7 +10,11 @@ namespace IMS.Api.Data
             // Apply pending migrations
             await context.Database.MigrateAsync();
 
+
+            // =========================================================
             // Seed Admin User
+            // =========================================================
+
             if (!await context.Users.AnyAsync())
             {
                 var adminUser = new User
@@ -26,7 +30,11 @@ namespace IMS.Api.Data
                 await context.SaveChangesAsync();
             }
 
+
+            // =========================================================
             // Seed Categories
+            // =========================================================
+
             if (!await context.Categories.AnyAsync())
             {
                 var categories = new List<Category>
@@ -43,6 +51,7 @@ namespace IMS.Api.Data
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = 1
                     },
+
                     new Category
                     {
                         CategoryCode = "CAT002",
@@ -61,7 +70,11 @@ namespace IMS.Api.Data
                 await context.SaveChangesAsync();
             }
 
+
+            // =========================================================
             // Seed Brands
+            // =========================================================
+
             if (!await context.Brands.AnyAsync())
             {
                 var brands = new List<Brand>
@@ -78,6 +91,7 @@ namespace IMS.Api.Data
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = 1
                     },
+
                     new Brand
                     {
                         BrandCode = "BRD002",
@@ -90,6 +104,7 @@ namespace IMS.Api.Data
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = 1
                     },
+
                     new Brand
                     {
                         BrandCode = "BRD003",
@@ -102,6 +117,7 @@ namespace IMS.Api.Data
                         CreatedAt = DateTime.UtcNow,
                         CreatedBy = 1
                     },
+
                     new Brand
                     {
                         BrandCode = "BRD004",
@@ -115,18 +131,124 @@ namespace IMS.Api.Data
                         CreatedBy = 1
                     }
                 };
+
                 await context.Brands.AddRangeAsync(brands);
                 await context.SaveChangesAsync();
             }
 
+
+            // =========================================================
+            // Seed Units
+            // =========================================================
+
+            if (!await context.Units.AnyAsync())
+            {
+                var units = new List<Unit>
+                {
+                    new Unit
+                    {
+                        UnitCode = "UNIT001",
+                        Name = "Piece",
+                        ShortName = "Pcs",
+                        Description = "Individual items or pieces",
+                        DisplayOrder = 1,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+                    new Unit
+                    {
+                        UnitCode = "UNIT002",
+                        Name = "Kilogram",
+                        ShortName = "Kg",
+                        Description = "Weight measured in kilograms",
+                        DisplayOrder = 2,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+                    new Unit
+                    {
+                        UnitCode = "UNIT003",
+                        Name = "Gram",
+                        ShortName = "g",
+                        Description = "Weight measured in grams",
+                        DisplayOrder = 3,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+                    new Unit
+                    {
+                        UnitCode = "UNIT004",
+                        Name = "Liter",
+                        ShortName = "Ltr",
+                        Description = "Volume measured in liters",
+                        DisplayOrder = 4,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+                    new Unit
+                    {
+                        UnitCode = "UNIT005",
+                        Name = "Meter",
+                        ShortName = "M",
+                        Description = "Length measured in meters",
+                        DisplayOrder = 5,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+                    new Unit
+                    {
+                        UnitCode = "UNIT006",
+                        Name = "Box",
+                        ShortName = "Box",
+                        Description = "Products sold by box",
+                        DisplayOrder = 6,
+                        IsActive = true,
+                        IsDeleted = false,
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    }
+                };
+
+                await context.Units.AddRangeAsync(units);
+                await context.SaveChangesAsync();
+            }
+
+
+            // =========================================================
             // Seed Products
+            // =========================================================
+
             if (!await context.Products.AnyAsync())
             {
+                // -----------------------------------------------------
+                // Get Categories
+                // -----------------------------------------------------
+
                 var electronics = await context.Categories
                     .FirstAsync(c => c.CategoryCode == "CAT001");
 
                 var furniture = await context.Categories
                     .FirstAsync(c => c.CategoryCode == "CAT002");
+
+
+                // -----------------------------------------------------
+                // Get Brands
+                // -----------------------------------------------------
 
                 var samsung = await context.Brands
                     .FirstAsync(b => b.BrandCode == "BRD001");
@@ -140,150 +262,250 @@ namespace IMS.Api.Data
                 var sony = await context.Brands
                     .FirstAsync(b => b.BrandCode == "BRD004");
 
+
+                // -----------------------------------------------------
+                // Get Units
+                // -----------------------------------------------------
+
+                var piece = await context.Units
+                    .FirstAsync(u => u.UnitCode == "UNIT001");
+
+                var kilogram = await context.Units
+                    .FirstAsync(u => u.UnitCode == "UNIT002");
+
+                var gram = await context.Units
+                    .FirstAsync(u => u.UnitCode == "UNIT003");
+
+                var liter = await context.Units
+                    .FirstAsync(u => u.UnitCode == "UNIT004");
+
+                var meter = await context.Units
+                    .FirstAsync(u => u.UnitCode == "UNIT005");
+
+                var box = await context.Units
+                    .FirstAsync(u => u.UnitCode == "UNIT006");
+
+
+                // -----------------------------------------------------
+                // Create Products
+                // -----------------------------------------------------
+
                 var products = new List<Product>
-    {
-        // Electronics
-        new Product
-        {
-            Sku = "PROD001",
-            Name = "Galaxy Laptop",
-            Slug = "galaxy-laptop",
-            Description = "High-performance Samsung laptop for work, study, and everyday use.",
-            CategoryId = electronics.Id,
-            BrandId = samsung.Id,
-            Unit = "Piece",
-            Price = 85000.00m,
-            CostPrice = 70000.00m,
-            DiscountPrice = 80000.00m,
-            StockQuantity = 25,
-            ReorderLevel = 5,
-            ImageUrl = "/uploads/products/laptop.jpg",
-            MobileImageUrl = "/uploads/products/laptop-mobile.jpg",
-            DisplayOrder = 1,
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = 1
-        },
+                {
+                    // =================================================
+                    // Electronics
+                    // =================================================
 
-        new Product
-        {
-            Sku = "PROD002",
-            Name = "iPhone",
-            Slug = "iphone",
-            Description = "Apple smartphone with powerful performance and advanced features.",
-            CategoryId = electronics.Id,
-            BrandId = apple.Id,
-            Unit = "Piece",
-            Price = 125000.00m,
-            CostPrice = 105000.00m,
-            DiscountPrice = 118000.00m,
-            StockQuantity = 30,
-            ReorderLevel = 5,
-            ImageUrl = "/uploads/products/iphone.jpg",
-            MobileImageUrl = "/uploads/products/iphone-mobile.jpg",
-            DisplayOrder = 2,
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = 1
-        },
+                    new Product
+                    {
+                        ProductCode = "PROD001",
+                        Sku = "GALAXY-LAPTOP",
+                        Name = "Galaxy Laptop",
+                        Slug = "galaxy-laptop",
+                        Description =
+                            "High-performance Samsung laptop for work, study, and everyday use.",
 
-        new Product
-        {
-            Sku = "PROD003",
-            Name = "Smart TV",
-            Slug = "smart-tv",
-            Description = "LG smart television with high-quality picture and smart features.",
-            CategoryId = electronics.Id,
-            BrandId = lg.Id,
-            Unit = "Piece",
-            Price = 75000.00m,
-            CostPrice = 60000.00m,
-            DiscountPrice = 70000.00m,
-            StockQuantity = 20,
-            ReorderLevel = 4,
-            ImageUrl = "/uploads/products/smart-tv.jpg",
-            MobileImageUrl = "/uploads/products/smart-tv-mobile.jpg",
-            DisplayOrder = 3,
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = 1
-        },
+                        CategoryId = electronics.Id,
+                        BrandId = samsung.Id,
+                        UnitId = piece.Id,
 
-        new Product
-        {
-            Sku = "PROD004",
-            Name = "Wireless Headphones",
-            Slug = "wireless-headphones",
-            Description = "Sony wireless headphones with clear sound and comfortable design.",
-            CategoryId = electronics.Id,
-            BrandId = sony.Id,
-            Unit = "Piece",
-            Price = 15000.00m,
-            CostPrice = 11000.00m,
-            DiscountPrice = 13500.00m,
-            StockQuantity = 40,
-            ReorderLevel = 8,
-            ImageUrl = "/uploads/products/headphones.jpg",
-            MobileImageUrl = "/uploads/products/headphones-mobile.jpg",
-            DisplayOrder = 4,
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = 1
-        },
+                        Price = 85000.00m,
+                        CostPrice = 70000.00m,
+                        DiscountPrice = 80000.00m,
 
-        // Furniture
-        new Product
-        {
-            Sku = "PROD005",
-            Name = "Office Chair",
-            Slug = "office-chair",
-            Description = "Comfortable ergonomic office chair suitable for long working hours.",
-            CategoryId = furniture.Id,
-            BrandId = samsung.Id,
-            Unit = "Piece",
-            Price = 35000.00m,
-            CostPrice = 28000.00m,
-            DiscountPrice = 32000.00m,
-            StockQuantity = 15,
-            ReorderLevel = 3,
-            ImageUrl = "/uploads/products/office-chair.jpg",
-            MobileImageUrl = "/uploads/products/office-chair-mobile.jpg",
-            DisplayOrder = 5,
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = 1
-        },
+                        StockQuantity = 25,
+                        ReorderLevel = 5,
 
-        new Product
-        {
-            Sku = "PROD006",
-            Name = "Office Desk",
-            Slug = "office-desk",
-            Description = "Modern office desk with a spacious and durable working surface.",
-            CategoryId = furniture.Id,
-            BrandId = lg.Id,
-            Unit = "Piece",
-            Price = 28000.00m,
-            CostPrice = 22000.00m,
-            DiscountPrice = 25000.00m,
-            StockQuantity = 10,
-            ReorderLevel = 2,
-            ImageUrl = "/uploads/products/office-desk.jpg",
-            MobileImageUrl = "/uploads/products/office-desk-mobile.jpg",
-            DisplayOrder = 6,
-            IsActive = true,
-            IsDeleted = false,
-            CreatedAt = DateTime.UtcNow,
-            CreatedBy = 1
-        }
-    };
+                        ImageUrl = "/uploads/products/laptop.jpg",
+                        MobileImageUrl =
+                            "/uploads/products/mobile/laptop-mobile.jpg",
+
+                        DisplayOrder = 1,
+
+                        IsActive = true,
+                        IsDeleted = false,
+
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+
+                    new Product
+                    {
+                        ProductCode = "PROD002",
+                        Sku = "IPHONE",
+                        Name = "iPhone",
+                        Slug = "iphone",
+                        Description =
+                            "Apple smartphone with powerful performance and advanced features.",
+
+                        CategoryId = electronics.Id,
+                        BrandId = apple.Id,
+                        UnitId = piece.Id,
+
+                        Price = 125000.00m,
+                        CostPrice = 105000.00m,
+                        DiscountPrice = 118000.00m,
+
+                        StockQuantity = 30,
+                        ReorderLevel = 5,
+
+                        ImageUrl = "/uploads/products/iphone.jpg",
+                        MobileImageUrl =
+                            "/uploads/products/mobile/iphone-mobile.jpg",
+
+                        DisplayOrder = 2,
+
+                        IsActive = true,
+                        IsDeleted = false,
+
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+
+                    new Product
+                    {
+                        ProductCode = "PROD003",
+                        Sku = "SMART-TV",
+                        Name = "Smart TV",
+                        Slug = "smart-tv",
+                        Description =
+                            "LG smart television with high-quality picture and smart features.",
+
+                        CategoryId = electronics.Id,
+                        BrandId = lg.Id,
+                        UnitId = piece.Id,
+
+                        Price = 75000.00m,
+                        CostPrice = 60000.00m,
+                        DiscountPrice = 70000.00m,
+
+                        StockQuantity = 20,
+                        ReorderLevel = 4,
+
+                        ImageUrl = "/uploads/products/smart-tv.jpg",
+                        MobileImageUrl =
+                            "/uploads/products/mobile/smart-tv-mobile.jpg",
+
+                        DisplayOrder = 3,
+
+                        IsActive = true,
+                        IsDeleted = false,
+
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+
+                    new Product
+                    {
+                        ProductCode = "PROD004",
+                        Sku = "WIRELESS-HEADPHONES",
+                        Name = "Wireless Headphones",
+                        Slug = "wireless-headphones",
+                        Description =
+                            "Sony wireless headphones with clear sound and comfortable design.",
+
+                        CategoryId = electronics.Id,
+                        BrandId = sony.Id,
+                        UnitId = piece.Id,
+
+                        Price = 15000.00m,
+                        CostPrice = 11000.00m,
+                        DiscountPrice = 13500.00m,
+
+                        StockQuantity = 40,
+                        ReorderLevel = 8,
+
+                        ImageUrl = "/uploads/products/headphones.jpg",
+                        MobileImageUrl =
+                            "/uploads/products/mobile/headphones-mobile.jpg",
+
+                        DisplayOrder = 4,
+
+                        IsActive = true,
+                        IsDeleted = false,
+
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+
+                    // =================================================
+                    // Furniture
+                    // =================================================
+
+                    new Product
+                    {
+                        ProductCode = "PROD005",
+                        Sku = "OFFICE-CHAIR",
+                        Name = "Office Chair",
+                        Slug = "office-chair",
+                        Description =
+                            "Comfortable ergonomic office chair suitable for long working hours.",
+
+                        CategoryId = furniture.Id,
+                        BrandId = samsung.Id,
+                        UnitId = piece.Id,
+
+                        Price = 35000.00m,
+                        CostPrice = 28000.00m,
+                        DiscountPrice = 32000.00m,
+
+                        StockQuantity = 15,
+                        ReorderLevel = 3,
+
+                        ImageUrl = "/uploads/products/office-chair.jpg",
+                        MobileImageUrl =
+                            "/uploads/products/mobile/office-chair-mobile.jpg",
+
+                        DisplayOrder = 5,
+
+                        IsActive = true,
+                        IsDeleted = false,
+
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    },
+
+
+                    new Product
+                    {
+                        ProductCode = "PROD006",
+                        Sku = "OFFICE-DESK",
+                        Name = "Office Desk",
+                        Slug = "office-desk",
+                        Description =
+                            "Modern office desk with a spacious and durable working surface.",
+
+                        CategoryId = furniture.Id,
+                        BrandId = lg.Id,
+                        UnitId = piece.Id,
+
+                        Price = 28000.00m,
+                        CostPrice = 22000.00m,
+                        DiscountPrice = 25000.00m,
+
+                        StockQuantity = 10,
+                        ReorderLevel = 2,
+
+                        ImageUrl = "/uploads/products/office-desk.jpg",
+                        MobileImageUrl =
+                            "/uploads/products/mobile/office-desk-mobile.jpg",
+
+                        DisplayOrder = 6,
+
+                        IsActive = true,
+                        IsDeleted = false,
+
+                        CreatedAt = DateTime.UtcNow,
+                        CreatedBy = 1
+                    }
+                };
 
                 await context.Products.AddRangeAsync(products);
+
                 await context.SaveChangesAsync();
             }
         }

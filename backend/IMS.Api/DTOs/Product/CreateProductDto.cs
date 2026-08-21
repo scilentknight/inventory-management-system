@@ -2,13 +2,17 @@
 
 namespace IMS.Api.DTOs.Product
 {
-    //Used when creating a product
+    // Used when creating a product
     public class CreateProductDto
     {
         [Required]
-        [StringLength(200, MinimumLength = 2)]
+        [StringLength(50)]
+        public string ProductCode { get; set; } = string.Empty;
 
+        [Required]
+        [StringLength(200, MinimumLength = 2)]
         public string Name { get; set; } = string.Empty;
+
         [Required]
         [StringLength(50)]
         public string Sku { get; set; } = string.Empty;
@@ -19,14 +23,16 @@ namespace IMS.Api.DTOs.Product
         [StringLength(2000)]
         public string? Description { get; set; }
 
+
         // Optional - selected from category dropdown
         public int? CategoryId { get; set; }
 
         // Optional - selected from brand dropdown
         public int? BrandId { get; set; }
 
-        [StringLength(20)]
-        public string? Unit { get; set; }
+        // Optional - selected from unit dropdown
+        public int? UnitId { get; set; }
+
 
         [Required]
         [Range(0, double.MaxValue)]
@@ -38,14 +44,17 @@ namespace IMS.Api.DTOs.Product
         [Range(0, double.MaxValue)]
         public decimal? DiscountPrice { get; set; }
 
-        [Range(0, int.MaxValue)]
-        public int StockQuantity { get; set; }
+        [Range(0, double.MaxValue)]
+        public decimal StockQuantity { get; set; }
 
-        [Range(0, int.MaxValue)]
-        public int? ReorderLevel { get; set; }
+        [Range(0, double.MaxValue)]
+        public decimal? ReorderLevel { get; set; }
+
 
         public IFormFile? Image { get; set; }
+
         public IFormFile? MobileImage { get; set; }
+
 
         [Range(0, int.MaxValue)]
         public int? DisplayOrder { get; set; }
